@@ -15,7 +15,7 @@ function App() {
         extensions: ['txt']
       }]
     })
-    if (path == null || path == undefined){ return }
+    if (path == null || path == undefined) { return }
     setPathtitle(path)
     await invoke("save_txt", { path, text })
   }
@@ -33,7 +33,17 @@ function App() {
   }
 
   async function match_txt() {
-    setText(await invoke("match_txt", { text }))
+    if (pathtitle == null || pathtitle == undefined || pathtitle == "") {
+      alert("ファイルを開くか、保存してください")
+      return
+    }
+    if (text == null || text == undefined || text == "") {
+      alert("何も入力されていません")
+      return
+    }
+    
+    setText(await invoke("match_txt", { text, pathtitle }))
+
   }
   //todo ボタンの処理を追加して、保存できるようにする（ファイルがあれば追記）
   //todo ファイル検索を作成する
