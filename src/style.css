@@ -16,13 +16,14 @@
 
 body {
   margin: 0px 0px;
-  width: 100vh;
+  width: 100vw;
+  height: 100vh;
   overflow-y: hidden;
   overflow-x: hidden;
   min-width: 100px;
 }
 button {
-  height: 10vh;
+  height: 6vh;
   float: left;
   -moz-appearance: none;
     -webkit-appearance: none;
@@ -34,10 +35,14 @@ button {
 button:hover {
   background-color: #3c3c3c00;
 }
+p {
+  margin: 0 0 0 3%;
+  height: 2vh;
+}
 
 textarea {
-  margin: 0;
-  margin-top: 10vh;
+  margin-top: 8vh;
+  margin-bottom: 2vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -47,7 +52,7 @@ textarea {
   color: #0f0f0f;
   background-color: #ffffff;
   transition: border-color 0.25s;
-  height: 90vh;
+  height: 85vh;
   width: 100vw;
 }
 
