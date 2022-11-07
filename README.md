@@ -1,3 +1,9 @@
+#テキストエディタです。
+入力した文字列で、直近で使ったファイルと同じ階層のファイルを検索して、開くことができます。
+エラーが起こった場合、止まることがあります。
+txtとして読めないファイルはスキップするようにしてあります。
+
+
 # Tauri + React
 
 This template should help get you started developing with Tauri and React in Vite.
