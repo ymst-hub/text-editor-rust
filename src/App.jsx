@@ -19,8 +19,10 @@ function App() {
       multiple: false,
     })
     if (path == null || path == undefined) { return }
+    let return_text = await invoke("open_txt", { path })
     setPathtitle(path)
-    setText(await invoke("open_txt", { path }))
+    setText(return_text)
+
   }
 
   async function match_txt() {

@@ -13,7 +13,10 @@ fn save_txt(path: &str, text: &str) {
 
 #[tauri::command]
 fn open_txt(path: &str) -> String {
-    std::fs::read_to_string(&path).unwrap()
+    match std::fs::read_to_string(&path) {
+        Ok(val) => val,
+        Err(_) => "".to_string(),
+    }
 }
 
 #[tauri::command]
@@ -25,17 +28,16 @@ fn fast_match_txt(text: &str, pathtitle: &str) -> (String, String) {
         if file.as_ref().unwrap().path().is_dir() {
             continue;
         }
-        let txt_buf = match std::fs::read_to_string(file.as_ref().unwrap().path()){
+        let txt_buf = match std::fs::read_to_string(file.as_ref().unwrap().path()) {
             Ok(val) => val,
-            Err(_) => {continue;}, 
+            Err(_) => {
+                continue;
+            }
         };
         let result = txt_buf.find(text).unwrap_or(txt_buf.len());
 
         if result != txt_buf.len() {
-            return (
-                txt_buf,
-                file.unwrap().path().to_string_lossy().into_owned(),
-            );
+            return (txt_buf, file.unwrap().path().to_string_lossy().into_owned());
         };
     }
     ("".to_string(), pathtitle.to_string())
@@ -43,11 +45,7 @@ fn fast_match_txt(text: &str, pathtitle: &str) -> (String, String) {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![
-            save_txt,
-            open_txt,
-            fast_match_txt
-            ])
+        .invoke_handler(tauri::generate_handler![save_txt, open_txt, fast_match_txt])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
