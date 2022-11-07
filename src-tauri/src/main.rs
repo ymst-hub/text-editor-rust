@@ -25,7 +25,10 @@ fn fast_match_txt(text: &str, pathtitle: &str) -> (String, String) {
         if file.as_ref().unwrap().path().is_dir() {
             continue;
         }
-        let txt_buf = std::fs::read_to_string(file.as_ref().unwrap().path()).unwrap();
+        let txt_buf = match std::fs::read_to_string(file.as_ref().unwrap().path()){
+            Ok(val) => val,
+            Err(_) => {continue;}, 
+        };
         let result = txt_buf.find(text).unwrap_or(txt_buf.len());
 
         if result != txt_buf.len() {
