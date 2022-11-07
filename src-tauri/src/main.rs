@@ -18,16 +18,16 @@ fn open_txt(path: &str) -> String {
 
 #[tauri::command]
 fn match_txt(text: &str, pathtitle: &str) -> (String, String) {
-    println!("{}", text);
     let path = Path::new(pathtitle).with_file_name("");
     let files = path.read_dir().unwrap();
-    
+
     for file in files {
         if file.as_ref().unwrap().path().is_dir() {
             continue;
         }
         let txt_buf = std::fs::read_to_string(file.as_ref().unwrap().path()).unwrap();
         let result = txt_buf.find(text).unwrap_or(txt_buf.len());
+
         if result != txt_buf.len() {
             return (
                 txt_buf,
