@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { open, save } from '@tauri-apps/api/dialog'
-import { path } from "@tauri-apps/api";
-import { type } from "@tauri-apps/api/os";
 
 function App() {
   const [text, setText] = useState("");
@@ -11,10 +9,6 @@ function App() {
   async function save_txt() {
     let path = await save({
       multiple: false,
-      filters: [{
-        name: 'title',
-        extensions: ['txt']
-      }]
     })
     if (path == null || path == undefined) { return }
     setPathtitle(path)
@@ -23,10 +17,6 @@ function App() {
   async function open_txt() {
     let path = await open({
       multiple: false,
-      filters: [{
-        name: 'title',
-        extensions: ['txt']
-      }]
     })
     if (path == null || path == undefined) { return }
     setPathtitle(path)
@@ -42,7 +32,7 @@ function App() {
       alert("何も入力されていません")
       return
     }
-    let [fileText, paths] = await invoke("match_txt", { text, pathtitle })
+    let [fileText, paths] = await invoke("fast_match_txt", { text, pathtitle })
     setText(fileText)
     setPathtitle(paths)
   }
@@ -59,7 +49,7 @@ function App() {
       </button>
 
       <button type="button" onClick={() => match_txt()}>
-        Match
+        FastMatch
       </button>
 
       <textarea id="texts" name="texts"

@@ -17,7 +17,7 @@ fn open_txt(path: &str) -> String {
 }
 
 #[tauri::command]
-fn match_txt(text: &str, pathtitle: &str) -> (String, String) {
+fn fast_match_txt(text: &str, pathtitle: &str) -> (String, String) {
     let path = Path::new(pathtitle).with_file_name("");
     let files = path.read_dir().unwrap();
 
@@ -40,7 +40,11 @@ fn match_txt(text: &str, pathtitle: &str) -> (String, String) {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![save_txt, open_txt, match_txt])
+        .invoke_handler(tauri::generate_handler![
+            save_txt,
+            open_txt,
+            fast_match_txt
+            ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
