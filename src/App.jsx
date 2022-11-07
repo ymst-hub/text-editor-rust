@@ -2,6 +2,7 @@ import { useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { open, save } from '@tauri-apps/api/dialog'
 import { path } from "@tauri-apps/api";
+import { type } from "@tauri-apps/api/os";
 
 function App() {
   const [text, setText] = useState("");
@@ -41,9 +42,9 @@ function App() {
       alert("何も入力されていません")
       return
     }
-    
-    setText(await invoke("match_txt", { text, pathtitle }))
-
+    let [fileText, paths] = await invoke("match_txt", { text, pathtitle })
+    setText(fileText)
+    setPathtitle(paths)
   }
   //todo ボタンの処理を追加して、保存できるようにする（ファイルがあれば追記）
   //todo ファイル検索を作成する

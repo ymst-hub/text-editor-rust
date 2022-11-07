@@ -2,8 +2,8 @@
     all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
-use std::{fs::File, io::Write};
 use std::path::Path;
+use std::{fs::File, io::Write};
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
 fn save_txt(path: &str, text: &str) {
@@ -15,26 +15,32 @@ fn save_txt(path: &str, text: &str) {
 fn open_txt(path: &str) -> String {
     std::fs::read_to_string(&path).unwrap()
 }
+
 #[tauri::command]
-fn match_txt(text: &str, pathtitle: &str) -> String {
-    println!("{}",text);
+fn match_txt(text: &str, pathtitle: &str) -> (String, String) {
+    println!("{}", text);
     let path = Path::new(pathtitle).with_file_name("");
-    println!("{} text: {}", path.to_str().unwrap(),text);
     let files = path.read_dir().unwrap();
+    
     for file in files {
-        let txt_buf = std::fs::read_to_string(file.unwrap().path()).unwrap();
-        let result =txt_buf.find(text).unwrap_or(txt_buf.len());
-        println!("{}",result);
+        if file.as_ref().unwrap().path().is_dir() {
+            continue;
+        }
+        let txt_buf = std::fs::read_to_string(file.as_ref().unwrap().path()).unwrap();
+        let result = txt_buf.find(text).unwrap_or(txt_buf.len());
         if result != txt_buf.len() {
-            return txt_buf;
+            return (
+                txt_buf,
+                file.unwrap().path().to_string_lossy().into_owned(),
+            );
         };
     }
-    "".to_string()
+    ("".to_string(), pathtitle.to_string())
 }
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![save_txt, open_txt,match_txt])
+        .invoke_handler(tauri::generate_handler![save_txt, open_txt, match_txt])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
