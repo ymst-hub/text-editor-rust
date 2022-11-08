@@ -34,13 +34,13 @@ fn fast_match_txt(text: &str, pathtitle: &str) -> (String, String) {
                 continue;
             }
         };
-        let result = txt_buf.find(text).unwrap_or(txt_buf.len());
+        let result = txt_buf.find(text).unwrap_or(txt_buf.len()+10);
 
-        if result != txt_buf.len() {
+        if result != txt_buf.len()+10 {
             return (txt_buf, file.unwrap().path().to_string_lossy().into_owned());
         };
     }
-    ("".to_string(), pathtitle.to_string())
+    ("".to_string(), "".to_string())
 }
 
 fn main() {
