@@ -6,6 +6,8 @@ function App() {
   const [text, setText] = useState("");
   const [pathtitle, setPathtitle] = useState("");
   //ボタンの処理
+
+  //新規保存
   async function save_txt() {
     let path = await save({
       multiple: false,
@@ -14,7 +16,7 @@ function App() {
     setPathtitle(path)
     await invoke("save_txt", { path, text })
   }
-
+  //上書き保存
   async function over_save_txt() {
     if (pathtitle == "" || pathtitle == null || pathtitle == undefined) {
       message("ファイルを開くか、保存してください")
@@ -24,7 +26,7 @@ function App() {
     await invoke("save_txt", { path, text })
     message("上書き保存しました")
   }
-
+  //開く
   async function open_txt() {
     let path = await open({
       multiple: false,
@@ -36,7 +38,7 @@ function App() {
     setText(fileText)
 
   }
-
+  //ファイル探索（１件）
   async function match_txt() {
     if (pathtitle == null || pathtitle == undefined || pathtitle == "") {
       message("ファイルを開くか、保存してください")
@@ -46,7 +48,7 @@ function App() {
       message("何も入力されていません")
       return
     }
-    let [fileText, path] = await invoke("fast_match_txt", { text, pathtitle })
+    let [fileText, path] = await invoke("one_match_txt", { text, pathtitle })
     if (path == null || path == undefined) {
       message("ファイルが見つかりませんでした")
       return
@@ -71,7 +73,7 @@ function App() {
       </button>
 
       <button type="button" onClick={() => match_txt()}>
-        単探索
+        ファイル探索（１件）
       </button>
 
       <textarea id="texts" name="texts"
