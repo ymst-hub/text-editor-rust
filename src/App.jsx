@@ -49,7 +49,7 @@ function App() {
       return
     }
     let [fileText, path] = await invoke("one_match_txt", { text, pathtitle })
-    if (path == null || path == undefined) {
+    if (path == "" || path == null  || path == undefined) {
       message("ファイルが見つかりませんでした")
       return
     }
@@ -75,14 +75,13 @@ function App() {
       <button type="button" onClick={() => match_txt()}>
         ファイル探索（１件）
       </button>
-
+      <p>ファイルポイント：{pathtitle}</p>
       <textarea id="texts" name="texts"
         value={text}
         rows="16" cols="33"
         onChange={(e) => setText(e.currentTarget.value)}
       >
       </textarea>
-      <p>ファイルポイント：{pathtitle}</p>
     </div>
   );
 
