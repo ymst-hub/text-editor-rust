@@ -6,23 +6,8 @@ function App() {
 
   const [text, setText] = useState("");//本文
   const [pathtitle, setPathtitle] = useState("");//ポイントパス
-  //起動時のデフォルトパス読み込み
-
-  useEffect(() => {
-    const setPath = async () => {
-      let confPath = "../../config_path.txt"
-      let [path, fileText] = await invoke("default_set_path", { confPath })
-      console.log(path)
-      setPathtitle(path)
-      setText(fileText)
-    }
-    setPath()
-    return () => {
-      setPathtitle("")
-      setText("")
-    }
-  }, [])
-
+ 
+  
   //ボタンの処理
   //新規保存
   async function save_txt() {
@@ -93,6 +78,7 @@ function App() {
       <button type="button" onClick={() => match_txt()}>
         ファイル探索
       </button>
+
       <p>ポイントパス：{pathtitle}</p>
       <textarea id="texts" name="texts"
         value={text}

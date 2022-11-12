@@ -7,19 +7,6 @@ use std::path::Path;
 use std::{fs::File, io::Write};
 
 #[tauri::command]
-fn default_set_path(conf_path:&str) -> (String, String) {
-    let first_path = open_txt(conf_path)
-        .parse()
-        .unwrap_or("".to_string());
-    let text = if first_path != "".to_string() {
-        open_txt(&first_path)
-    } else {
-        "".to_string()
-    };
-    (first_path, text)
-}
-
-#[tauri::command]
 fn save_txt(path: &str, text: &str) {
     let mut file = File::create(path).unwrap();
     file.write_all(text.as_bytes()).unwrap();
@@ -37,7 +24,7 @@ fn open_txt(path: &str) -> String {
 fn one_match_txt(text: &str, pathtitle: &str) -> (String, String) {
     let path = Path::new(pathtitle).with_file_name("");
     let files = path.read_dir().unwrap();
-    
+
     for file in files {
         if file.as_ref().unwrap().path().is_dir() {
             continue;
@@ -63,7 +50,6 @@ fn main() {
             save_txt,
             open_txt,
             one_match_txt,
-            default_set_path,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
