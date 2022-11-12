@@ -1,12 +1,29 @@
-import { useState } from "react";
+import { useEffect,useState} from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { message, open, save } from '@tauri-apps/api/dialog'
 
 function App() {
-  const [text, setText] = useState("");
-  const [pathtitle, setPathtitle] = useState("");
-  //ボタンの処理
 
+  const [text, setText] = useState("");//本文
+  const [pathtitle, setPathtitle] = useState("");//ポイントパス
+  //起動時のデフォルトパス読み込み
+
+  useEffect(() => {
+    const setPath = async() => {
+      let confPath = "./config_path.txt"
+      let [path, fileText] = await invoke("default_set_path", { confPath })
+      console.log(path)
+      setPathtitle(path)
+      setText(fileText)
+    }
+    setPath()
+    return () => {
+      setPathtitle("")
+      setText("")
+    }
+  },[])
+
+  //ボタンの処理
   //新規保存
   async function save_txt() {
     let path = await save({
@@ -49,13 +66,14 @@ function App() {
       return
     }
     let [fileText, path] = await invoke("one_match_txt", { text, pathtitle })
-    if (path == "" || path == null  || path == undefined) {
+    if (path == "" || path == null || path == undefined) {
       message("ファイルが見つかりませんでした")
       return
     }
     setText(fileText)
     setPathtitle(path)
   }
+
   //todo ボタンの処理を追加して、保存できるようにする（ファイルがあれば追記）
   //todo ファイル検索を作成する
   return (
@@ -75,7 +93,7 @@ function App() {
       <button type="button" onClick={() => match_txt()}>
         ファイル探索（１件）
       </button>
-      <p>ファイルポイント：{pathtitle}</p>
+      <p>ポイントパス：{pathtitle}</p>
       <textarea id="texts" name="texts"
         value={text}
         rows="16" cols="33"

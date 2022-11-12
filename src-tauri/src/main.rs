@@ -2,9 +2,23 @@
     all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
+
 use std::path::Path;
 use std::{fs::File, io::Write};
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+
+#[tauri::command]
+fn default_set_path(conf_path:&str) -> (String, String) {
+    let first_path = open_txt(conf_path)
+        .parse()
+        .unwrap_or("".to_string());
+    let text = if first_path != "".to_string() {
+        open_txt(&first_path)
+    } else {
+        "".to_string()
+    };
+    (first_path, text)
+}
+
 #[tauri::command]
 fn save_txt(path: &str, text: &str) {
     let mut file = File::create(path).unwrap();
@@ -45,7 +59,12 @@ fn one_match_txt(text: &str, pathtitle: &str) -> (String, String) {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![save_txt, open_txt, one_match_txt])
+        .invoke_handler(tauri::generate_handler![
+            save_txt,
+            open_txt,
+            one_match_txt,
+            default_set_path,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
