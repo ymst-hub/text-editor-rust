@@ -91,7 +91,7 @@ function App() {
       </button>
 
       <button type="button" onClick={() => match_txt()}>
-        ファイル探索（１件）
+        ファイル探索
       </button>
       <p>ポイントパス：{pathtitle}</p>
       <textarea id="texts" name="texts"

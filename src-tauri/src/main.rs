@@ -37,7 +37,7 @@ fn open_txt(path: &str) -> String {
 fn one_match_txt(text: &str, pathtitle: &str) -> (String, String) {
     let path = Path::new(pathtitle).with_file_name("");
     let files = path.read_dir().unwrap();
-
+    
     for file in files {
         if file.as_ref().unwrap().path().is_dir() {
             continue;
