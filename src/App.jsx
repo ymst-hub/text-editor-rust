@@ -1,4 +1,4 @@
-import { useEffect,useState} from "react";
+import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { message, open, save } from '@tauri-apps/api/dialog'
 
@@ -9,8 +9,8 @@ function App() {
   //起動時のデフォルトパス読み込み
 
   useEffect(() => {
-    const setPath = async() => {
-      let confPath = "./config_path.txt"
+    const setPath = async () => {
+      let confPath = "../../config_path.txt"
       let [path, fileText] = await invoke("default_set_path", { confPath })
       console.log(path)
       setPathtitle(path)
@@ -21,7 +21,7 @@ function App() {
       setPathtitle("")
       setText("")
     }
-  },[])
+  }, [])
 
   //ボタンの処理
   //新規保存
