@@ -7,7 +7,7 @@ function App() {
   const [text, setText] = useState("");//本文
   const [pathtitle, setPathtitle] = useState("");//ポイントパス
  
-  
+
   //ボタンの処理
   //新規保存
   async function save_txt() {
@@ -40,7 +40,7 @@ function App() {
     setText(fileText)
 
   }
-  //ファイル探索（１件）
+  //ファイル探索
   async function match_txt() {
     if (pathtitle == null || pathtitle == undefined || pathtitle == "") {
       message("ファイルを開くか、保存してください")
@@ -59,8 +59,6 @@ function App() {
     setPathtitle(path)
   }
 
-  //todo ボタンの処理を追加して、保存できるようにする（ファイルがあれば追記）
-  //todo ファイル検索を作成する
   return (
     <div>
       <button type="button" onClick={() => save_txt()}>
