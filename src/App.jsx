@@ -59,6 +59,11 @@ function App() {
     setPathtitle(path)
   }
 
+  //clear
+  function clear_txt() {
+    setText("")
+  }
+
   return (
     <div>
       <button type="button" onClick={() => save_txt()}>
@@ -75,6 +80,10 @@ function App() {
 
       <button type="button" onClick={() => match_txt()}>
         ファイル探索
+      </button>
+
+      <button type="button" onClick={() => clear_txt()}>
+        クリア
       </button>
 
       <p>ポイントパス：{pathtitle}</p>
